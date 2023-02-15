@@ -8,3 +8,4 @@ data/
 .vscode/
 data.zip
 cmake-build-debug/
+CMakeFiles/
