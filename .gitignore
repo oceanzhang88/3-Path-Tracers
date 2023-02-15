@@ -7,3 +7,4 @@ data/
 .idea/
 .vscode/
 data.zip
+cmake-build-debug/
