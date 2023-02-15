@@ -1,0 +1,34 @@
+defaults:
+  - environment: ones
+  - _self_
+
+geometry:
+  name: mesh
+  config:
+    paths:
+      - data/meshes/lego.obj
+brdf:
+  - name: diffuse
+    config:
+      color: [0.8, 0.8, 0.8]
+emitters: []
+camera:
+  name: perspective
+  config:
+    fov: 40
+    c2w:
+      - - -0.6566542387008667
+        - -0.2367822825908661
+        - 0.7160581946372986
+        - 2.8865230083465576
+      - - 0.7541918158531189
+        - -0.20615987479686737
+        - 0.623452365398407
+        - 2.513216972351074
+      - - -1.4901162970204496e-08
+        - 0.9494377970695496
+        - 0.31395500898361206
+        - 1.26559317111969
+
+width: 800
+height: 800

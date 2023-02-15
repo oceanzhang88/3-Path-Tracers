@@ -1,0 +1,3 @@
+/Users/ocean/Graphics/3-Path-Tracer/CPP-Tracer/build/CMakeFiles/Cpp-Path-Tracer.dir
+/Users/ocean/Graphics/3-Path-Tracer/CPP-Tracer/build/CMakeFiles/edit_cache.dir
+/Users/ocean/Graphics/3-Path-Tracer/CPP-Tracer/build/CMakeFiles/rebuild_cache.dir

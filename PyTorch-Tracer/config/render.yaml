@@ -1,0 +1,12 @@
+defaults:
+  - scene: bunny
+  - integrator: normals
+  - render_schema
+  - _self_
+
+scale: -1
+spp: 64
+block_size: 128
+gui: false
+device: cpu
+save_exr: false

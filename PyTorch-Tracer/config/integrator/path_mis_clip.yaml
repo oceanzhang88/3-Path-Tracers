@@ -1,0 +1,6 @@
+name: path
+config:
+  max_path_length: 2
+  cont_prob: 0.95
+  mis: true
+  enable_emitter_sample: true

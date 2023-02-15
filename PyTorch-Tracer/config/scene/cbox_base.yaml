@@ -1,0 +1,28 @@
+geometry:
+  name: mesh
+  config:
+    paths:
+      - data/meshes/cbox/walls.obj
+      - data/meshes/cbox/rightwall.obj
+      - data/meshes/cbox/leftwall.obj
+      - data/meshes/cbox/sphere1.obj
+      - data/meshes/cbox/sphere2.obj
+      - data/meshes/cbox/light.obj
+emitters:
+  - name: area
+    config:
+      radiance: [40, 40, 40]
+      i_primitive: 5
+      geometry:
+      i_emitter:
+camera:
+  name: perspective
+  config:
+    fov: 27.7856
+    c2w:
+      - [-1.0, 0.0, 0.0, 0.0]
+      - [0.0, 0.9996429869514801, 0.026718881689228337, 0.919769]
+      - [0.0, -0.026718881689228337, 0.9996429869514801, 5.41159]
+
+width: 800
+height: 600

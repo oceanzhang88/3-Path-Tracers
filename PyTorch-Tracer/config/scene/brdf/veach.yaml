@@ -1,0 +1,42 @@
+- name: diffuse
+  config:
+    color: [0, 0, 0]
+- name: diffuse
+  config:
+    color: [0, 0, 0]
+- name: diffuse
+  config:
+    color: [0, 0, 0]
+- name: diffuse
+  config:
+    color: [0, 0, 0]
+- name: diffuse
+  config:
+    color: [0, 0, 0]
+- name: microfacet
+  config:
+    color: [0.0175, 0.0225, 0.0325]
+    roughness: 0.005
+    ext_ior: 1.000277
+    int_ior: 1.5046
+- name: microfacet
+  config:
+    color: [0.0175, 0.0225, 0.0325]
+    roughness: 0.02
+    ext_ior: 1.000277
+    int_ior: 1.5046
+- name: microfacet
+  config:
+    color: [0.0175, 0.0225, 0.0325]
+    roughness: 0.05
+    ext_ior: 1.000277
+    int_ior: 1.5046
+- name: microfacet
+  config:
+    color: [0.0175, 0.0225, 0.0325]
+    roughness: 0.1
+    ext_ior: 1.000277
+    int_ior: 1.5046
+- name: diffuse
+  config:
+    color: [0.1, 0.1, 0.1]

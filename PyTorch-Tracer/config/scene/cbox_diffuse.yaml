@@ -1,0 +1,5 @@
+defaults:
+  - cbox_base
+  - environment: none
+  - brdf: cbox_diffuse
+  - _self_

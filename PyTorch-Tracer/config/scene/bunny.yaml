@@ -1,0 +1,25 @@
+defaults:
+  - environment: none
+  - _self_
+
+geometry:
+  name: mesh
+  config:
+    paths:
+      - data/meshes/bunny.obj
+brdf:
+  - name: diffuse
+    config:
+      color: [0.8, 0.8, 0.8]
+emitters: []
+camera:
+  name: perspective
+  config:
+    fov: 30
+    c2w:
+      - [0.9997910510911432, 0.007174462451302293, -0.01914108791583975, -0.0315182]
+      - [-0.00258186049389902, 0.9732062126267533, 0.22991955484708299, 0.284011]
+      - [0.020277774889200652, -0.22982209378827279, 0.9730213857117, 0.7331]
+
+width: 768
+height: 768

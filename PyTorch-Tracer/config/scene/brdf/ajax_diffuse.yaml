@@ -1,0 +1,6 @@
+- name: diffuse
+  config:
+    color: [0.2, 0.2, 0.4]
+- name: diffuse
+  config:
+    color: [0, 0, 0]

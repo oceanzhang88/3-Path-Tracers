@@ -1,0 +1,29 @@
+defaults:
+  - scene: cbox_train_diffuse
+  - integrator: path_mis_clip
+  - train_schema
+  - _self_
+
+scale: -1
+device: cpu
+
+mode: nerad
+gt: ???
+steps: 4000
+train_spp: 8
+batch_size: 1024
+learning_rate: 1e-3
+
+render_spp: 32
+block_size: 128
+
+render_step_size: 1000
+save_step_size: 1000
+render_first_step: true
+save_first_step: true
+
+
+pbar:
+  update_frequency: 10
+  data_keys: [loss]
+  show_first_step: true

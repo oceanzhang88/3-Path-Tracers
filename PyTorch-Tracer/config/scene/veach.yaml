@@ -1,0 +1,86 @@
+defaults:
+  - environment: none
+  - brdf: veach
+  - _self_
+geometry:
+  name: mesh
+  config:
+    paths:
+      - data/meshes/veach/sphere.obj
+      - data/meshes/veach/sphere.obj
+      - data/meshes/veach/sphere.obj
+      - data/meshes/veach/sphere.obj
+      - data/meshes/veach/sphere.obj
+      - data/meshes/veach/plate1.obj
+      - data/meshes/veach/plate2.obj
+      - data/meshes/veach/plate3.obj
+      - data/meshes/veach/plate4.obj
+      - data/meshes/veach/floor.obj
+    transforms:
+      - - type: scale
+          params: [0.1, 0.1, 0.1]
+        - type: translate
+          params: [-1.25, 0, 0]
+      - - type: scale
+          params: [0.03333, 0.03333, 0.03333]
+        - type: translate
+          params: [-3.75, 0, 0]
+      - - type: scale
+          params: [0.3, 0.3, 0.3]
+        - type: translate
+          params: [1.25, 0, 0]
+      - - type: scale
+          params: [0.9, 0.9, 0.9]
+        - type: translate
+          params: [3.75, 0, 0]
+      - - type: scale
+          params: [1, 1, 1]
+        - type: translate
+          params: [0, 4, 3]
+      - []
+      - []
+      - []
+      - []
+      - []
+emitters:
+  - name: area
+    config:
+      radiance: [100, 100, 100]
+      i_primitive: 0
+      geometry:
+      i_emitter:
+  - name: area
+    config:
+      radiance: [901.803, 901.803, 901.803]
+      i_primitive: 1
+      geometry:
+      i_emitter:
+  - name: area
+    config:
+      radiance: [11.1111, 11.1111, 11.1111]
+      i_primitive: 2
+      geometry:
+      i_emitter:
+  - name: area
+    config:
+      radiance: [1.23457, 1.23457, 1.23457]
+      i_primitive: 3
+      geometry:
+      i_emitter:
+  - name: area
+    config:
+      radiance: [100, 100, 100]
+      i_primitive: 4
+      geometry:
+      i_emitter:
+camera:
+  name: perspective
+  config:
+    fov: 25
+    c2w:
+      - [1.0, 0.0, -0.0, 0.0]
+      - [-0.0, 0.9578262852211514, 0.28734788556634544, 6.0]
+      - [0.0, -0.28734788556634544, 0.9578262852211514, 27.5]
+
+width: 768
+height: 512

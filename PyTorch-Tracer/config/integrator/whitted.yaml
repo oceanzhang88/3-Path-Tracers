@@ -1,0 +1,4 @@
+name: whitted
+config:
+  max_path_length: 1024
+  cont_prob: 0.95

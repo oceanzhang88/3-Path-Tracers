@@ -1,0 +1,24 @@
+defaults:
+  - environment: none
+  - brdf: ajax_simple
+  - _self_
+
+emitters: []
+
+geometry:
+  name: mesh
+  config:
+    paths:
+      - data/meshes/ajax.obj
+
+camera:
+  name: perspective
+  config:
+    fov: 30
+    c2w:
+      - [0.5356178113180166, 0.2998821944654142, -0.7894201857322278, -65.6055]
+      - [-1.3177133929210855e-05, 0.9348248718057387, 0.355109080255275, 47.5762]
+      - [0.844460514189539, -0.19019234604997048, 0.5007128033900746, 24.3583]
+
+width: 768
+height: 768

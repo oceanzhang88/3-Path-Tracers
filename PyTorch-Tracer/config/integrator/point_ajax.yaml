@@ -1,0 +1,4 @@
+name: point
+config:
+  position: [-20, 40, 20]
+  energy: [37600, 37600, 37600]
