@@ -4,6 +4,11 @@ This image is rendered from the CPP-Tracer via Photon Mapping.
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
+## Monte-Carlo Integration in Action
+
+
+<img width="704" alt="Screenshot 2023-02-28 at 10 39 31" src="https://user-images.githubusercontent.com/25319668/221903302-53c34f1a-f285-4fde-ae84-7f98d5dcea33.png">
+
 
 ## CPP-Tracer
 
