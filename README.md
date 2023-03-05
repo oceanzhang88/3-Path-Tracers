@@ -4,29 +4,44 @@ This image is rendered from the CPP-Tracer via Photon Mapping.
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
-## Processing-Tracer
+## Monte-Carlo Integration in Action
+
+
+<img width="704" alt="Screenshot 2023-02-28 at 10 39 31" src="https://user-images.githubusercontent.com/25319668/221903302-53c34f1a-f285-4fde-ae84-7f98d5dcea33.png">
+
+
+## CPP-Tracer
 
 ### About
+This Path-Tracer gives the full path tracing capacity. 
 
-This Ray-Tracer is adapted from my coursework CS-6491, Grad Computer Graphics, 
-taught by Prof. Greg Turk. 
+The project includes:
+Multithreading, Monte Carlo Integration, Multiple Importance Sampling, 
+VNDF-GGX Microfacet model, Uber BSDF(mixing reflection and transmission), Photon Mapping, Tonemapping and more.
 
-Everything is pure Java from scratch without any 3rd-party libraries, 
-including all the linear-algebra math.
+<img width="564" alt="Screenshot 2023-02-27 at 14 42 30" src="https://user-images.githubusercontent.com/25319668/221666604-5d8ca269-8635-446d-8f05-e91a9d948f24.png">
+<img width="515" alt="Screenshot 2023-02-27 at 14 45 03" src="https://user-images.githubusercontent.com/25319668/221666889-767a7436-4e92-4450-b99e-745e2f577e4e.png">
 
-The project includes: KD-BVH, Instancing, Distribution Ray Tracing, and more to be added.
 
 ### Installation
 
-You need to download Processing first:
-https://processing.org/download
+This project is built with C++20, the dependencies are self-contained:
 
-Then, double-click:
-```
-Processing-Tracer.pde
-```
-to open the software and click Run.
+* glm
+* json_parser
 
+```
+cd CPP-Tracer
+rm -rf build/
+mkdir build
+cd build 
+cmake ../
+make
+```
+### Run 
+```
+build/CPP-Path-Tracer
+```
 
 ## PyTorch-Tracer
 
@@ -75,34 +90,32 @@ python render.py scene=cbox_train_diffuse \
     checkpoint=./scripts/cbox-diffuse-walls-step4000.ckpt
 ```
 
-## CPP-Tracer
+
+
+## Processing-Tracer
 
 ### About
-This Path-Tracer gives the full path tracing capacity. 
 
-The project includes:
-Multithreading, Monte Carlo Integration, Multiple Importance Sampling, 
-VNDF-GGX Microfacet model, Uber BSDF(mixing reflection and transmission), Photon Mapping, Tonemapping and more.
+This Ray-Tracer is adapted from my coursework CS-6491, Grad Computer Graphics, 
+taught by Prof. Greg Turk. 
+
+Everything is pure Java from scratch without any 3rd-party libraries, 
+including all the linear-algebra math.
+
+The project includes: KD-BVH, Instancing, Distribution Ray Tracing, and more to be added.
 
 ### Installation
 
-This project is built with C++20, the dependencies are self-contained:
+You need to download Processing first:
+https://processing.org/download
 
-* glm
-* json_parser
+Then, double-click:
+```
+Processing-Tracer.pde
+```
+to open the software and click Run.
 
-```
-cd CPP-Tracer
-rm -rf build/
-mkdir build
-cd build 
-cmake ../
-make
-```
-### Run 
-```
-build/CPP-Path-Tracer
-```
+
 
 ## Acknowledgement
 1. https://faculty.cc.gatech.edu/~turk/bunny/bunny.html
