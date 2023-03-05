@@ -16,7 +16,7 @@ class Point {
 
   @Override
     public String toString() {
-    return this.x + " " + this.y + " " + this.z + " " + this.w;
+    return "x: " + this.x + "y: " + this.y + "z: " + this.z + "w: " + this.w + "\n";
   }
 }
 
@@ -24,42 +24,63 @@ class Ray {
   public PVector dir;
   public Point origin;
   public boolean shadowRay;
-  public int lightId = -1;
   public int objectId = -1;
-  
+  public Point target;
+
   Ray (boolean shadowRay) {
     this.shadowRay = shadowRay;
   }
   
-  Ray(Point eye, Point vp, boolean shadowRay, int lightId) {
-    this.shadowRay = shadowRay;
-    float x = vp.x - eye.x;
-    float y = vp.y - eye.y;
-    float z = vp.z - eye.z;
+  
+  Ray(Point eye, Point target, boolean shadowRay, int objectId) {
+    this(shadowRay);
+    float x = target.x - eye.x;
+    float y = target.y - eye.y;
+    float z = target.z - eye.z;
     dir = new PVector(x, y, z);
     origin = eye;
-    this.lightId = lightId;
+    this.objectId = objectId;
+    this.target = target;
+  }
+  
+  Ray(Point eye, PVector dir, boolean shadowRay, int objectId) {
+    this(shadowRay);
+    this.dir = dir;
+    origin = eye;
+    this.objectId = objectId;
+  }
+  
+  
+  public void calibrateDir() {
+    float x = target.x - origin.x;
+    float y = target.y - origin.y;
+    float z = target.z - origin.z;
+    dir = new PVector(x, y, z);
   }
 }
 
 class Triangle extends SceneObject implements HitTest {
   public Point[] abc;
   int count = 0;
-  Color surface_color;
   Point centriod;
   
   PVector normal;
   float a, b, c, d;
   
-  Triangle(Color col) {
-    abc = new Point[3];
-    surface_color = new Color(col.r, col.g, col.b); 
+  Triangle(Material mat) {
+    this.abc = new Point[3];
+    this.material = mat; 
+  }
+  
+  public Point center(){
+    return null;
   }
 
   public BBox getBBox() {
     float[] min3 = getMin3();
     float[] max3 = getMax3();
-    return new BBox(black, min3, max3, false);
+    
+    return new BBox(blackMat, min3, max3, false);
   }
   
   public float[] getMin3() {
@@ -105,6 +126,13 @@ class Triangle extends SceneObject implements HitTest {
       normal = getVecAC().cross(getVecAB());
     }
     normal.normalize();
+    if (normal.y == -1.0) {
+      normal.y = 1.0;
+    }
+    
+    if (debug_flag) {
+       println("side 1, 2, 3: ");
+    }
 
     this.a = normal.x;
     this.b = normal.y;
@@ -114,7 +142,7 @@ class Triangle extends SceneObject implements HitTest {
   }
   
   public Color getColor() {
-    return surface_color;
+    return material.diffuseColor;
   }
 
   public void setVertex(Point v) {
@@ -183,21 +211,25 @@ class Triangle extends SceneObject implements HitTest {
   }
 
   public Hit isHit(Ray ray) {
-    float ray_normal_dot = a * ray.dir.x + b * ray.dir.y + c * ray.dir.z;
+    float rayNormalDot = a * ray.dir.x + b * ray.dir.y + c * ray.dir.z;
     
     t = -(a * ray.origin.x + b * ray.origin.y + c * ray.origin.z + d);
-    //if (debug_flag && ray.shadowRay) {
-    //  println("triangle inst", t, ray_normal_dot);
-    //}
+    
     //avoid divide by zero
-    t = ray_normal_dot == 0 ? -1 : t / ray_normal_dot;
+    t = rayNormalDot == 0 ? -1 : t / rayNormalDot;
     if (!isIntersect(ray)) {
       return null;
     }
     //t = Math.abs(t);
     Point p = getHitPoint(ray, t);
+
     if (isInTriangle(p)) {
-      Hit hit = new Hit(getColor(), p, normal, ray, t);
+      Hit hit = null;
+      if (debug_flag) {
+        println("side 1, 2, 3: ");
+      }
+      hit = new Hit(material, p, normal, ray, t);
+      hit.objectId = id;
       return hit;
     }
     return null;
@@ -217,21 +249,28 @@ class Triangle extends SceneObject implements HitTest {
     Point vertB = getVertB();
     Point vertC = getVertC();
     
-    PVector ap = new PVector(p.x - vertA.x, p.y - vertA.y, p.z - vertA.z);
-    PVector ab = new PVector(vertB.x - vertA.x, vertB.y - vertA.y, vertB.z - vertA.z);
+    PVector ap = new PVector(p.x - vertA.x, p.y - vertA.y, 
+                             p.z - vertA.z);
+    PVector ab = new PVector(vertB.x - vertA.x, vertB.y - vertA.y, 
+                             vertB.z - vertA.z);
     float side1 = side(ap, ab, normal);
 
-    PVector bp = new PVector(p.x - vertB.x, p.y - vertB.y, p.z - vertB.z);
-    PVector bc = new PVector(vertC.x - vertB.x, vertC.y - vertB.y, vertC.z - vertB.z);
+    PVector bp = new PVector(p.x - vertB.x, p.y - vertB.y, 
+                             p.z - vertB.z);
+    PVector bc = new PVector(vertC.x - vertB.x, vertC.y - vertB.y, 
+                             vertC.z - vertB.z);
     float side2 = side(bp, bc, normal);
 
-    PVector cp = new PVector(p.x - vertC.x, p.y - vertC.y, p.z - vertC.z);
-    PVector ca = new PVector(vertA.x - vertC.x, vertA.y - vertC.y, vertA.z - vertC.z);
+    PVector cp = new PVector(p.x - vertC.x, p.y - vertC.y, 
+                             p.z - vertC.z);
+    PVector ca = new PVector(vertA.x - vertC.x, vertA.y - vertC.y, 
+                             vertA.z - vertC.z);
     float side3 = side(cp, ca, normal);
     //if (debug_flag && ray.shadowRay) {
     //  println("side 1, 2, 3: ", p, side1, side2, side3);
     //}
-    if (side1 >= 0 && side2 >= 0 && side3 >= 0 || side1 <= 0 && side2 <= 0 && side3 <= 0) {
+    if (side1 >= 0 && side2 >= 0 && side3 >= 0 || 
+        side1 <= 0 && side2 <= 0 && side3 <= 0) {
       return true;
     }
     return false;
@@ -244,4 +283,62 @@ class Triangle extends SceneObject implements HitTest {
     float dot = normal.dot(cross);
     return dot;
   }
+  
+  public void setMaterial(Material material) {
+    this.material = material;
+  }
+}
+
+class Sphere  extends SceneObject implements HitTest {
+  public Point center;
+  public float radius;
+  
+  Sphere(Point center, float radius) {
+    this.center = center;
+    this.radius = radius;
+  }
+  
+  
+  public Hit isHit(Ray ray) {
+    float t = nearestIntersection(ray.origin, ray.dir);
+    if (t < 0) {
+      return null;
+    }
+    
+    Point p = getHitPoint(ray, t);
+    //PVector normal = new PVector(p.x - (center.x + ray.motionOffset.x), 
+    //                             p.y - (center.y + ray.motionOffset.y), 
+    //                             p.z - (center.z + ray.motionOffset.z));
+    PVector normal = new PVector(p.x - (center.x), 
+                                 p.y - (center.y), 
+                                 p.z - (center.z));                            
+    normal.normalize();
+    
+    Hit hit = new Hit(material, p, normal, ray, t);
+    hit.objectId = id;
+    return hit;
+  }
+  
+  public Point center(){
+    return center;
+  }
+  
+  private float nearestIntersection(Point o, PVector d) {
+    float a = d.x * d.x + d.y * d.y + d.z * d.z;
+    float ox = o.x - center.x;
+    float oy = o.y - center.y;
+    float oz = o.z - center.z;
+    float b = 2 * (ox * d.x + oy * d.y + oz * d.z);
+    float c = ox * ox + oy * oy + oz * oz - radius * radius;
+    float discriminant = b * b - 4 * a * c;
+    if (discriminant < 0) {
+      return -1;
+    }
+    
+    float t1 = (float)(-b + Math.sqrt(discriminant)) / (2 * a);
+    float t2 = (float)(-b - Math.sqrt(discriminant)) / (2 * a);
+    
+    return t1 <= t2 ? t1 : t2;
+  }
+  
 }

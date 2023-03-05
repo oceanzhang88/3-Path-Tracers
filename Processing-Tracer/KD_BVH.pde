@@ -78,6 +78,10 @@ class BVH extends SceneObject implements HitTest {
     println("BVH Tree Depth: ", depth);
   }
   
+  public Point center(){
+    return null;
+  }
+  
   public void addTriangle (Triangle tri) {
     triangles.add(tri);
   }
@@ -90,7 +94,7 @@ class BVH extends SceneObject implements HitTest {
     node.r = r;
     
     SplitPoint sp = findSplitPoint1(l, r);
-    node.bbox = new BBox(black, sp.min3, sp.max3, false);
+    node.bbox = new BBox(blackMat, sp.min3, sp.max3, false);
      
     //return leaf node
     if (r - l <= leafSize) {

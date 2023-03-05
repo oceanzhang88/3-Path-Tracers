@@ -46,6 +46,10 @@ class Instance extends SceneObject implements HitTest {
     }
   }
   
+  public Point center(){
+    return null;
+  }
+  
   public Hit isHit(Ray ray){
     instray = new Ray(ray.shadowRay);
     instray.origin = ray.origin;

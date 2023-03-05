@@ -3,7 +3,8 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 
-float epsilon = 0.01f;
+float epsilon = 0.00001f;
+int recDepth = 10;
 
 Color black = new Color(0, 0, 0);
 
@@ -38,6 +39,7 @@ Color color2Color(color argb) {
 }
 
 int lightID = 1;
+int objectID = 1;
 
 Comparator<Triangle> tricmpX = (Triangle t1, Triangle t2) -> Float.compare(t1.centroid().x, t2.centroid().x);
 Comparator<Triangle> tricmpY = (Triangle t1, Triangle t2) -> Float.compare(t1.centroid().x, t2.centroid().x);
@@ -69,6 +71,8 @@ HitTest getHitTest(SceneObject object) {
       ht = (BVH)object;
     } else if (object instanceof Instance) {
       ht = (Instance)object;
+    } else if (object instanceof Sphere) {
+      ht = (Sphere)object;
     } else {
       println("Unkown scene object type!");
     }

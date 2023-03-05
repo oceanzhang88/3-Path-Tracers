@@ -1,0 +1,49 @@
+# several objects, some with mirror surfaces
+
+rays_per_pixel 10
+
+fov 60
+
+# blue background
+
+background 0.2 0.2 1
+
+# light sources 
+
+light -2 2 2   .5 .5 .5
+light  0 3 -4.5  .7 .7 .7
+
+# spheres resting on ground
+
+surface  .3 .3 .8
+sphere  .4  1.4 -.6 -4
+
+surface  .3 .8 .3
+sphere  .4  0.2 -.6 -3
+
+surface  .8 .3 .3
+sphere  .4  -.3 -.6 -4
+
+# glossy sphere
+glossy  0 0 0  .8 .8 .8  50  .9 .2
+sphere  .8  -1.5 -.2 -4
+
+# these two triangles acts as a ground plane
+
+# glossy floor
+glossy  .3 .3 .3  0 0 0  0  .7 .1
+
+begin
+vertex -100 -1 -100
+vertex  100 -1 -100
+vertex  100 -1  100
+end
+
+begin
+vertex  100 -1  100
+vertex -100 -1  100
+vertex -100 -1 -100
+end
+
+render
+

@@ -1,0 +1,25 @@
+# one triangle and one sphere, stair-step edges
+
+rays_per_pixel 1
+
+fov 60
+background .4 .4 1
+light 5 5 5 1 1 1
+
+surface   0.8 0 0
+
+push
+translate -1 0 -4
+begin
+vertex  -.7 -1 0
+vertex   .7 -1 0
+vertex   0  1 0
+end
+pop
+
+push
+translate 1 0 -4
+sphere 1  0 0 0
+pop
+
+render

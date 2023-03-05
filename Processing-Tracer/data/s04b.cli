@@ -1,0 +1,52 @@
+# testing soft shadows, multiple rays per pixel
+
+rays_per_pixel 100
+
+fov 60
+
+# blue background
+
+background 0.2 0.2 1
+
+# light sources 
+
+light -2 2 0  .4 .4 .4
+
+disk_light  -1 3 -6  1  .3 .7 .3  .8 .8 .8
+
+# sphere resting on ground
+
+surface  1 1 1
+
+sphere  .6  .8 -.4 -4
+
+# triangle resting on ground
+
+push
+translate -.8 -.4 -4
+scale 0.6 0.6 0.6
+begin
+vertex -1 -1 0
+vertex  1 -1 0
+vertex  0  1 0
+end
+pop
+
+# these two triangles acts as a ground plane
+
+surface  1 1 1
+
+begin
+vertex -100 -1 -100
+vertex  100 -1 -100
+vertex  100 -1  100
+end
+
+begin
+vertex  100 -1  100
+vertex -100 -1  100
+vertex -100 -1 -100
+end
+
+render
+

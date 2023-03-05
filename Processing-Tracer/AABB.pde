@@ -7,8 +7,8 @@ class BBox extends SceneObject implements HitTest {
   float[] dunit;
   boolean needNormal;
   
-  BBox(Color c, float[] min3, float[] max3, boolean needNormal) {
-    diffuse = c;
+  BBox(Material mat, float[] min3, float[] max3, boolean needNormal) {
+    this.material = mat;
     this.min3 = min3;
     this.max3 = max3;
     float cx = (min3[0] + max3[0])/2;
@@ -23,6 +23,9 @@ class BBox extends SceneObject implements HitTest {
     this.needNormal = needNormal;
   }
  
+  public Point center(){
+    return null;
+  }
   
   public Hit isHit(Ray ray) {
     //if (debug_flag && ray.shadowRay) {
@@ -65,6 +68,8 @@ class BBox extends SceneObject implements HitTest {
       normal = new PVector(x, y, z);
     }
     
-    return new Hit(diffuse, p, normal, ray, t);
+    Hit hit = new Hit(diffuse, p, normal, ray, t);
+    hit.objectId = id;
+    return hit;
   }
 }

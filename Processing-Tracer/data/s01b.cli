@@ -1,0 +1,19 @@
+# three spheres with specular highlights
+
+fov 60
+background .4 .4 1
+light 5 5 5 1 1 1
+
+translate 0 0 -6
+
+glossy   0.4 0 0  .7 .7 .7  10  0 0
+sphere 1  -2.2 0 0
+
+glossy   0 0.4 0  .7 .7 .7  20  0 0
+sphere 1  0 0 0
+
+glossy   0 0 0.8  .7 .7 .7  50  0 0
+sphere 1  2.2 0 0
+
+
+render

@@ -1,0 +1,88 @@
+# testing depth-of-field, many rays per pixel
+
+rays_per_pixel 100
+
+lens  0.08  3
+
+fov 60
+
+# blue background
+
+background 0.2 0.2 1
+
+# light sources 
+
+light  2 5 0  .8 .8 .8
+light -3 4 0  .2 .2 .2
+
+# spheres resting on ground
+
+surface  .9 .9 .9
+
+push
+translate -1.5 -1.5 0
+sphere  0.5  0 0 -1
+sphere  0.5  0 0 -2
+sphere  0.5  0 0 -3
+sphere  0.5  0 0 -4
+sphere  0.5  0 0 -5
+sphere  0.5  0 0 -6
+sphere  0.5  0 0 -7
+sphere  0.5  0 0 -8
+sphere  0.5  0 0 -9
+sphere  0.5  0 0 -10
+sphere  0.5  0 0 -11
+sphere  0.5  0 0 -12
+sphere  0.5  0 0 -13
+sphere  0.5  0 0 -14
+sphere  0.5  0 0 -15
+sphere  0.5  0 0 -16
+sphere  0.5  0 0 -17
+sphere  0.5  0 0 -18
+sphere  0.5  0 0 -19
+sphere  0.5  0 0 -20
+pop
+
+push
+translate 1.5 -1.5 0
+sphere  0.5  0 0 -1
+sphere  0.5  0 0 -2
+sphere  0.5  0 0 -3
+sphere  0.5  0 0 -4
+sphere  0.5  0 0 -5
+sphere  0.5  0 0 -6
+sphere  0.5  0 0 -7
+sphere  0.5  0 0 -8
+sphere  0.5  0 0 -9
+sphere  0.5  0 0 -10
+sphere  0.5  0 0 -11
+sphere  0.5  0 0 -12
+sphere  0.5  0 0 -13
+sphere  0.5  0 0 -14
+sphere  0.5  0 0 -15
+sphere  0.5  0 0 -16
+sphere  0.5  0 0 -17
+sphere  0.5  0 0 -18
+sphere  0.5  0 0 -19
+sphere  0.5  0 0 -20
+pop
+
+# these two triangles acts as a ground plane
+
+surface  .9 .9 .9
+
+begin
+vertex -100 -2 -100
+vertex  100 -2 -100
+vertex  100 -2  100
+end
+
+begin
+vertex  100 -2  100
+vertex -100 -2  100
+vertex -100 -2 -100
+end
+
+render
+
+

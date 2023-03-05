@@ -4,6 +4,7 @@ interface HitTest {
 
 class Hit {
   public Color diffuse;
+  public Material material;
   public Point p;
   public PVector normal;
   public Ray ray;
@@ -12,6 +13,14 @@ class Hit {
   
   Hit(Color c, Point p, PVector normal, Ray ray, float t) {
     this.diffuse = c;
+    this.p = p;
+    this.normal = normal;
+    this.ray = ray;
+    this.t = t;
+  }
+  
+  Hit(Material material, Point p, PVector normal, Ray ray, float t) {
+    this.material = material;
     this.p = p;
     this.normal = normal;
     this.ray = ray;

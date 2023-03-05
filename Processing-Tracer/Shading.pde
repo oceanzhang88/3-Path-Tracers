@@ -1,21 +1,3 @@
-class Light {
-  float x;
-  float y;
-  float z;
-  
-  Color diffuseColor;
-  int id;
-
-  Light(float x, float y, float z, Color c, int id) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-
-    diffuseColor = c;
-    this.id = id;
-  }
-}
-
 class Color {
   public float r;
   public float g;
@@ -34,30 +16,127 @@ class Color {
 }
 
 class Shader {
-  public color getDiffuseColor(ArrayList<Light> lights, Hit hit) {
+  
+  public Color getGlobalIllumination(Ray ray, int depth) {
+    //Find direct illumination color
+    Hit hit = scene.castRay(ray);
+    
+    if (hit != null) {
+      Color out = new Color(0, 0, 0);
+      // set the pixel color, you should put the correct pixel color here
+      Color direct = getDirectIllumination(scene.lights, hit);
+      out = colorAdd(out, direct); 
+      
+      Material mat = hit.material;
+      //Find reflection color
+      if (mat.kRefl > 0 && depth < recDepth) {
+        PVector reflDir = getReflDir(hit.normal, hit.ray.dir);
+        if (mat.glossRadius > 0) {
+          reflDir = sample(reflDir, mat.glossRadius);
+        }
+        Ray reflRay = new Ray(hit.p, reflDir, false, -1);
+        
+        Color reflColor = getGlobalIllumination(reflRay, depth + 1);
+        reflColor = colorMul(reflColor, mat.kRefl);
+        out = colorAdd(out, reflColor);
+      }  
+      return out;
+    } 
+    
+    return scene.bkColor;
+  }
+  
+  public Color getDirectIllumination(ArrayList<Light> lights, Hit hit) {
     int i = 0;
     Point p = hit.p;
     Color out = new Color(0, 0, 0);
-    //if (debug_flag) {
-    //      println("debug ray occuluded from light:", i);
-    //}
+    
     for(Light light : lights) {
       i++;
-      if (scene.isOcculuded(hit, light)) {
+      
+      Color lightColor = light.lcolor();
+      Point lcenter = light.center();
+      PVector l = null;
+      
+      if (light instanceof SpotLight) {
+        //We only 2 kinds of light, directional and spot
+        SpotLight slight = (SpotLight)light;
+        lcenter = slight.sample();
+      }
+      
+      l = new PVector(lcenter.x - p.x, lcenter.y - p.y, lcenter.z - p.z);
+      l.normalize();
+      
+      if (scene.isOcculuded(hit, lcenter)) {
         continue;
       }
       
-      PVector normal = hit.normal;
-      Color objDiffuse = hit.diffuse;
-      Color lightDiffuse = light.diffuseColor;
-      PVector l = new PVector(light.x - p.x, light.y - p.y, light.z - p.z);
-      l.normalize();
-      float ndotl = Math.max(0, normal.dot(l));
-     
-      Color albedo = colorBlend(objDiffuse, lightDiffuse);
+      PVector n = hit.normal;
+      PVector vDir = hit.ray.dir.copy();
+      vDir.normalize();
+      vDir.mult(-1); //align with normal orientation
+      
+      PVector h = vDir.add(l);
+      h.normalize();
+      
+      Material objMaterial = hit.material;
+      
+      Color objDiffuse = objMaterial.diffuseColor;
+      Color objSpecular = new Color(0, 0, 0);
+      
+      if (objMaterial.specularPow > 0){
+        objSpecular = objMaterial.specularColor;
+  
+        float ndoth = Math.max(0, n.dot(h));
+        float specPow = (float)Math.pow(ndoth, objMaterial.specularPow);
+        
+        objSpecular = colorBlend(objSpecular, lightColor);
+        objSpecular = colorMul(objSpecular, specPow);
+      }
+      
+      float ndotl = Math.max(0, n.dot(l));
+      Color albedo = colorBlend(objDiffuse, lightColor);
       Color diffuse = colorMul(albedo, ndotl);
+      
+      //if (debug_flag) {
+      //    println("debug ray occuluded from light:", i);
+      //}
       out = colorAdd(out, diffuse);
+      out = colorAdd(out, objSpecular);
     }
-    return color2Color(out);
+    
+    return out;
+  }
+  
+  private PVector sample(PVector dir, float radius) {
+    while (true) {
+      float x = random(-radius, radius);
+      float y = random(-radius, radius);
+      float z = random(-radius, radius);
+      
+      float distSqure = x * x + y * y + z * z;
+  
+      if (distSqure <= radius * radius) {
+        float dx = dir.x + x;
+        float dy = dir.y + y;
+        float dz = dir.z + z;
+        PVector newDir = new PVector(dx, dy, dz);
+        newDir.normalize();
+        return newDir;
+      }
+    }
+  }
+  
+  private PVector getReflDir(PVector n, PVector v) {
+    PVector vnorm = v.copy();
+    PVector nnorm = n.copy();
+    vnorm.normalize();
+    nnorm.normalize();
+    
+    float ndotv = nnorm.dot(vnorm);
+    PVector n2ndotv = nnorm.mult(2 * ndotv);
+    PVector rnorm = vnorm.sub(n2ndotv);
+    rnorm.normalize();
+    return rnorm;
   }
 }

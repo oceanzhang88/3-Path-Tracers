@@ -1,0 +1,50 @@
+# a scene that combines several soft effects
+
+rays_per_pixel 100
+
+fov 60
+
+lens  0.08  3
+
+# blue background
+
+background 0.2 0.2 1
+
+# light sources 
+
+light -2 2 2   .5 .5 .5
+disk_light  0 3 -4.5  1  0 1 0  .7 .7 .7
+
+# spheres resting on ground
+
+surface  .3 .3 .8
+sphere  .4  .6 -.6 -5
+
+surface  .3 .8 .3
+sphere  .4  -2 -.6 -6
+
+surface  1 1 1
+sphere  .4  1.5 -.6 -3
+
+surface  .8 .3 .3
+sphere  .4  -.7 0 -3
+moving_object .6 0 0
+
+# these two triangles acts as a ground plane
+
+surface  1 1 1
+
+begin
+vertex -100 -1 -100
+vertex  100 -1 -100
+vertex  100 -1  100
+end
+
+begin
+vertex  100 -1  100
+vertex -100 -1  100
+vertex -100 -1 -100
+end
+
+render
+

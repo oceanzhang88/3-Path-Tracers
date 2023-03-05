@@ -1,7 +1,6 @@
 __pycache__/
 scripts/
 PyTorch-Tracer/outputs/
-data/
 .DS_Store
 .vscode/launch.json
 .idea/

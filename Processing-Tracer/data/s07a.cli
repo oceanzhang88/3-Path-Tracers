@@ -1,0 +1,70 @@
+# several objects with diffuse surfaces
+
+fov 60
+
+# blue background
+
+background 0.2 0.2 1
+
+# light sources 
+
+light -2 2 2   .5 .5 .5
+light  0 3 -4.5  .7 .7 .7
+
+# spheres resting on ground
+
+surface  .3 .3 .8
+sphere  .4  1.4 -.6 -4
+
+surface  .3 .8 .3
+sphere  .4  0.2 -.6 -3
+
+surface  .8 .3 .3
+sphere  .4  -.3 -.6 -4
+
+surface  1 1 1
+sphere  .8  -1.5 -.2 -4
+
+# two triangles that make up a square
+
+push
+
+surface  1 1 1
+
+translate 1 0 -7
+rotatey -20
+rotatex 8
+scale 2 2 2
+
+begin
+vertex -1 -1 0
+vertex  1 -1 0
+vertex  1  1 0
+end
+
+begin
+vertex  1  1 0
+vertex -1  1 0
+vertex -1 -1 0
+end
+
+pop
+
+# these two triangles acts as a ground plane
+
+surface  1 1 1
+
+begin
+vertex -100 -1 -100
+vertex  100 -1 -100
+vertex  100 -1  100
+end
+
+begin
+vertex  100 -1  100
+vertex -100 -1  100
+vertex -100 -1 -100
+end
+
+render
+
