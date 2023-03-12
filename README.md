@@ -112,7 +112,7 @@ taught by Prof. Greg Turk.
 Everything is pure Java from scratch without any 3rd-party libraries, 
 including all the linear-algebra math.
 
-The project includes: KD-BVH, Instancing, Distribution Ray Tracing, and more to be added.
+The project includes: KD-BVH, Instancing, Distribution Ray Tracing(soft shadow, depth of field, motion blur, glossy reflection, anti-aliasing), and more to be added.
 
 ### Installation
 
@@ -121,7 +121,7 @@ https://processing.org/download
 
 Then, double-click:
 ```
-Processing-Tracer.pde
+p3_ray_tracer_acc_dist.pde
 ```
 to open the software and click Run.
 
