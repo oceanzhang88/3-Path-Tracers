@@ -137,7 +137,7 @@ to open the software and click Run.
 7. https://graphics.pixar.com/library/OrthonormalB/paper.pdf
 8. https://github.com/skarupke/heap
 9. https://seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
-10. http://jcgt.org/published/0007/04/01/11
+10. http://jcgt.org/published/0007/04/01/
 11. http://jcgt.org/published/0003/02/03/
 12. https://www.gdcvault.com/play/1024478/PBR-Diffuse-Lighting-for-GGX
 13. https://www.cs.cornell.edu/~srm/publications/EGSR07-btdf.html
