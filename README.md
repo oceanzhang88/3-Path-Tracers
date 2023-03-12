@@ -1,6 +1,16 @@
 # 3 Flavors of Path Tracer
 
-This image is rendered from the CPP-Tracer via Photon Mapping with SPP 25.
+This image is rendered from the CPP-Tracer via Photon Mapping.
+
+- SPP:25 
+
+- Total number of photon emissions from light sources: 100 000 000
+
+- Photon maps and numbers of stored photons:
+
+- Global photons: 8 123 058
+  
+- Caustic photons: 120 653 488
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
