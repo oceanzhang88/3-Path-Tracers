@@ -1,6 +1,6 @@
 # 3 Flavors of Path Tracer
 
-This image is rendered from the CPP-Tracer via Photon Mapping.
+This image is rendered from the CPP-Tracer via Photon Mapping with SPP 25.
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
