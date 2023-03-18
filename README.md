@@ -14,13 +14,12 @@ This image is rendered from the CPP-Tracer via Photon Mapping.
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
-## Monte-Carlo Integration in Action
+## Monte-Carlo Integration with Important Sampling in Action
 
 
 <img width="704" alt="Screenshot 2023-02-28 at 10 39 31" src="https://user-images.githubusercontent.com/25319668/221903302-53c34f1a-f285-4fde-ae84-7f98d5dcea33.png">
 
-
-## CPP-Tracer
+## C++ Refined Path Tracer
 
 ### About
 This Path-Tracer gives the full path tracing capacity. 
@@ -53,7 +52,7 @@ make
 build/CPP-Path-Tracer
 ```
 
-## PyTorch-Tracer
+## PyTorch Differential Path Tracer
 
 ### About
 This PyTorch Path Tracer aims to integrate future deep learning models 
@@ -102,7 +101,7 @@ python render.py scene=cbox_train_diffuse \
 
 
 
-## Processing-Tracer
+## Processing Path Tracer(Coursework Adapted)
 
 ### About
 
