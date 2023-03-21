@@ -37,7 +37,7 @@ std::string Format::progress(double progress)
 {
     std::string d_str = std::to_string(progress);
     size_t dot_pos = d_str.find('.');
-    std::string l(""), r("");
+    std::string l, r;
     if (dot_pos != std::string::npos)
     {
         l = d_str.substr(0, dot_pos);
@@ -48,7 +48,7 @@ std::string Format::progress(double progress)
         l = d_str;
     }
     size_t r_len = (4 - l.length());
-    std::string r_n = r.length() >= r_len ? r.substr(0, r_len) : r + std::string(' ', static_cast<int>(r_len - r.length()));
+    std::string r_n = r.length() >= r_len ? r.substr(0, r_len) : r + std::string(static_cast<int>(r_len - r.length()), ' ');
 
     return l + "." + r_n + "%";
 }

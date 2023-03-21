@@ -24,7 +24,7 @@ Histogram::Histogram(const std::vector<double>& data, std::size_t num_bins)
 
 double Histogram::level(double count_percentage) const
 {
-    std::size_t num = static_cast<std::size_t>(data_size * count_percentage);
+    auto num = static_cast<std::size_t>(data_size * count_percentage);
     std::size_t count = 0;
     double level = 0.0;
     for (std::size_t i = 0; i < counts.size(); i++)

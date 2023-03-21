@@ -1,4 +1,4 @@
-# Install script for directory: /Users/ocean/Graphics/3-Path-Tracer/CPP-Tracer
+# Install script for directory: /Users/ocean/Graphics/Research Projects/3-Path-Tracers/CPP-Tracer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/ocean/Graphics/3-Path-Tracer/CPP-Tracer/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/ocean/Graphics/Research Projects/3-Path-Tracers/CPP-Tracer/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

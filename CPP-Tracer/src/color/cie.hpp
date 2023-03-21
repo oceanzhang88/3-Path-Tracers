@@ -41,7 +41,7 @@ namespace CIE
     inline constexpr glm::dvec3 D65_XYZ = XYZ<D65.size>(D65);
     inline constexpr glm::dvec3 E_XYZ = XYZ<E.size>(E);
 
-    // Spectral reflectance or radiance distribution to normalized XYZ using midpoint Riemann sum
+    // Spectral reflectance_color or radiance distribution to normalized XYZ using midpoint Riemann sum
     inline glm::dvec3 XYZ(const Spectral::Distribution<double> &distribution, Spectral::Type type)
     {
         glm::dvec3 result(0.0);

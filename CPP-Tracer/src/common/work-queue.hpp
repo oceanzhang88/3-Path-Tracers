@@ -14,7 +14,7 @@ template <class T>
 class WorkQueue
 {
 public:
-    WorkQueue(const std::vector<T> items) : m()
+    explicit WorkQueue(const std::vector<T> items) : m()
     {
         original_size = items.size();
         for (const auto& item : items)

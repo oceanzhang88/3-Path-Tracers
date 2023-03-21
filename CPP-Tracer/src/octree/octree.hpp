@@ -32,7 +32,7 @@ public:
 
     void insert(const Data& data);
 
-    bool leaf() const
+    [[nodiscard]] bool leaf() const
     {
         return octants.empty();
     }

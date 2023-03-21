@@ -33,18 +33,3 @@ glm::dvec3 Transform::transformNormal(const glm::dvec3& n) const
     return rotation_matrix * glm::dvec4(glm::normalize(n / scale), 1.0);
 }
 
-void waitForInput()
-{
-    std::cout << std::endl << "Press enter to exit." << std::flush;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    char c;
-    while (std::cin.get(c) && c != '\n') {}
-}
-
-void Log(const std::string& message)
-{
-    std::ofstream log("log.txt", std::ios::app);
-    std::string temp = message;
-    temp.erase(std::remove(temp.begin(), temp.end(), '\n'), temp.end());
-    log << "[" << Format::date(std::chrono::system_clock::now()) << "] " << temp << std::endl;
-}

@@ -5,9 +5,7 @@
 
 #include "cie.hpp"
 
-namespace CIE
-{
-    namespace Illuminant
+namespace CIE::Illuminant
     {
         struct WhitePoint
         {
@@ -64,7 +62,7 @@ namespace CIE
             return XYZ(white_points[idx >= A && idx < NUM ? idx : NUM].xy, 1.0);
         }
 
-        constexpr glm::dvec3 whitePoint(const char* name)
+    constexpr glm::dvec3 whitePoint(const char* name)
         {
             glm::dvec2 xy = white_points[NUM].xy;
             for (int i = 0; i < NUM; i++)
@@ -101,4 +99,3 @@ namespace CIE
             return result / result.y;
         }
     }
-}

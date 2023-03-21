@@ -12,11 +12,11 @@
 class PhotonMapper : public Integrator
 {
 public:
-    PhotonMapper(const nlohmann::json& j);
+    explicit PhotonMapper(const nlohmann::json& j);
 
     void emitPhoton(Ray ray, glm::dvec3 flux, size_t thread);
 
-    virtual glm::dvec3 sampleRay(Ray ray);
+    glm::dvec3 sampleRay(Ray ray) override;
     
     glm::dvec3 estimateGlobalRadiance(const Interaction& interaction); // All radiance except caustic
     glm::dvec3 estimateCausticRadiance(const Interaction& interaction);

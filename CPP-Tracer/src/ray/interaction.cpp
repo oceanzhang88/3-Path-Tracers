@@ -4,15 +4,18 @@
 #include "../material/material.hpp"
 #include "../sampling/sampling.hpp"
 #include "../sampling/sampler.hpp"
-#include "../common/constants.hpp"
-#include "../common/coordinate-system.hpp"
 #include "../surface/surface.hpp"
 #include "../common/constexpr-math.hpp"
 
 Interaction::Interaction(const Intersection &isect, const Ray &ray, double external_ior) :
-    t(isect.t), ray(ray), out(-ray.direction), n1(ray.medium_ior),
-    material(isect.surface->material), surface(isect.surface),
-    position(ray(t)), normal(isect.surface->normal(position))
+    t(isect.t),
+    ray(ray),
+    out(-ray.direction),
+    n1(ray.medium_ior),
+    material(isect.surface->material),
+    surface(isect.surface),
+    position(ray(t)),
+    normal(isect.surface->normal(position))
 {
     double cos_theta = glm::dot(ray.direction, normal);
 
@@ -50,7 +53,7 @@ Interaction::Interaction(const Intersection &isect, const Ray &ray, double exter
 
     selectType();
 
-    dirac_delta = type != DIFFUSE && !material->rough_specular;
+    impulse_specular = type != DIFFUSE && !material->rough_specular;
 }
 
 bool Interaction::sampleBSDF(glm::dvec3& bsdf_absIdotN, double& pdf, Ray& new_ray, bool flux) const

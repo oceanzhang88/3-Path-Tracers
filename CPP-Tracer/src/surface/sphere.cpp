@@ -1,10 +1,12 @@
+#include <utility>
+
 #include "surface.hpp"
 
 #include "../common/constexpr-math.hpp"
 #include "../common/constants.hpp"
 
 Surface::Sphere::Sphere(double radius, std::shared_ptr<Material> material)
-    : Base(material), origin(0.0), radius(radius)
+    : Base(std::move(material)), origin(0.0), radius(radius)
 {
     computeArea();
     computeBoundingBox();

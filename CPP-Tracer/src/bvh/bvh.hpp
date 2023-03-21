@@ -11,9 +11,9 @@ class BVH
 {
     struct SurfaceCentroid
     {
-        SurfaceCentroid(std::shared_ptr<Surface::Base> surface);
+        explicit SurfaceCentroid(const std::shared_ptr<Surface::Base>& surface);
 
-        glm::dvec3 pos() const
+        [[nodiscard]] glm::dvec3 pos() const
         {
             return centroid;
         }
@@ -24,9 +24,9 @@ class BVH
 
     struct BuildNode
     {
-        BuildNode() { }
+        BuildNode() = default;
 
-        bool leaf()
+        [[nodiscard]] bool leaf() const
         {
             return children.empty();
         }
@@ -34,7 +34,7 @@ class BVH
         BoundingBox BB;
         std::vector<std::shared_ptr<BuildNode>> children;
         std::vector<std::shared_ptr<Surface::Base>> surfaces;
-        uint32_t df_idx; // depth-first index in tree
+        uint32_t df_idx{}; // depth-first index in tree
     };
 
     /********************************************************************************
@@ -68,9 +68,9 @@ class BVH
     struct alignas(64) LinearNode
     {
         BoundingBox BB;
-        uint32_t start_surface;
-        uint8_t num_surfaces;
-        uint32_t next_sibling; // 0 if there is none
+        uint32_t start_surface{};
+        uint8_t num_surfaces{};
+        uint32_t next_sibling{}; // 0 if there is none
 
         // Used for priority queue
         struct alignas(16) NodeIntersection
@@ -86,7 +86,7 @@ public:
         const std::vector<std::shared_ptr<Surface::Base>> &surfaces, 
         const nlohmann::json &j);
 
-    Intersection intersect(const Ray& ray) const;
+    [[nodiscard]] Intersection intersect(const Ray& ray) const;
 
     static constexpr size_t leaf_surfaces = 8;
     static constexpr size_t max_leaf_surfaces = 0xFF;
@@ -95,12 +95,12 @@ public:
     int bins_per_axis = 16;
 
 private:
-    void recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, std::shared_ptr<BuildNode> bvh_node);
-    void recursiveBuildBinarySAH(std::shared_ptr<BuildNode> bvh_node);
-    void recursiveBuildQuaternarySAH(std::shared_ptr<BuildNode> bvh_node);
-    void compact(std::shared_ptr<BuildNode> bvh_node, uint32_t next_sibling, uint32_t &surface_idx);
+    void recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, const std::shared_ptr<BuildNode>& bvh_node);
+    void recursiveBuildBinarySAH(const std::shared_ptr<BuildNode>& bvh_node);
+    void recursiveBuildQuaternarySAH(const std::shared_ptr<BuildNode>& bvh_node);
+    void compact(const std::shared_ptr<BuildNode>& bvh_node, uint32_t next_sibling, uint32_t &surface_idx);
 
-    void arbitrarySplit(std::shared_ptr<BuildNode> bvh_node, size_t N);
+    void arbitrarySplit(const std::shared_ptr<BuildNode>& bvh_node, size_t N);
 
     // Nodes stored in depth-first order
     std::vector<LinearNode> linear_tree;

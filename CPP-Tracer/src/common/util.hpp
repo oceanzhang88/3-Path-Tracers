@@ -17,17 +17,13 @@ inline glm::dvec3 intToColor(uint32_t i)
     return glm::dvec3((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF) / 255.0;
 }
 
-void Log(const std::string& message);
-
-void waitForInput();
-
 struct Transform
 {
     Transform(const glm::dvec3 &position, const glm::dvec3 &scale, const glm::dvec3 &rotation);
 
-    glm::dvec3 transformNormal(const glm::dvec3& normal) const;
+    [[nodiscard]] glm::dvec3 transformNormal(const glm::dvec3& normal) const;
 
-    glm::dmat4 matrix, rotation_matrix;
+    glm::dmat4 matrix{}, rotation_matrix{};
     const glm::dvec3 position, scale, rotation;
     bool negative_determinant;
 };
@@ -88,9 +84,3 @@ inline double powerHeuristic(double a_pdf, double b_pdf)
     return a_pdf2 / (a_pdf2 + b_pdf * b_pdf);
 }
 
-template<class T>
-inline std::priority_queue<T> reservedPriorityQueue(size_t size)
-{
-    std::vector<T> container; container.reserve(size);
-    return std::priority_queue<T, std::vector<T>, std::less<T>>(std::less<T>(), std::move(container));
-}

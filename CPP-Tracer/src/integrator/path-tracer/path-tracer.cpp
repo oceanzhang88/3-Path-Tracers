@@ -26,7 +26,7 @@ glm::dvec3 PathTracer::sampleRay(Ray ray)
 
         if (!intersection)
         {
-            return radiance + scene.skyColor(ray) * throughput;
+            return radiance + Scene::skyColor(ray) * throughput;
         }
 
         Interaction interaction(intersection, ray, refraction_history.externalIOR(ray));

@@ -6,14 +6,14 @@
 struct CoordinateSystem
 {
     CoordinateSystem() : T() { }
-    CoordinateSystem(const glm::dvec3& N);
+    explicit CoordinateSystem(const glm::dvec3& N);
 
-    glm::dvec3 from(const glm::dvec3& v) const;
-    glm::dvec3 to(const glm::dvec3& v) const;
+    [[nodiscard]] glm::dvec3 from(const glm::dvec3& v) const;
+    [[nodiscard]] glm::dvec3 to(const glm::dvec3& v) const;
 
     static glm::dvec3 from(const glm::dvec3& v, const glm::dvec3& N);
 
-    const glm::dvec3& normal() const;
+    [[nodiscard]] const glm::dvec3& normal() const;
 
 private:
     glm::dmat3 T;

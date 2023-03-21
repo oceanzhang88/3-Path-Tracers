@@ -8,21 +8,20 @@ template <class Data>
 class LinearOctree
 {
 public:
-    LinearOctree() { }
+    LinearOctree() = default;
 
     // This destroys the input octree for memory reasons.
-    LinearOctree(Octree<Data> &octree_root);
+    explicit LinearOctree(Octree<Data> &octree_root);
 
     void knnSearch(const glm::dvec3& p, size_t k, PriorityQueue<SearchResult<Data>>& result) const;
-    std::vector<SearchResult<Data>> radiusSearch(const glm::dvec3& p, double radius) const;
 
     struct alignas(128) LinearOctant
     {
         BoundingBox BB;
-        uint64_t start_data;
-        uint64_t contained_data;
-        uint32_t next_sibling;
-        uint8_t leaf;
+        uint64_t start_data{};
+        uint64_t contained_data{};
+        uint32_t next_sibling{};
+        uint8_t leaf{};
     };
 
     std::vector<LinearOctant> linear_tree;

@@ -1,13 +1,14 @@
 #include "surface.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <utility>
 
 #include "../common/util.hpp"
 #include "../common/constexpr-math.hpp"
 #include "../common/constants.hpp"
 
 Surface::Quadric::Quadric(const nlohmann::json &j, std::shared_ptr<Material> material)
-    : Base(material)
+    : Base(std::move(material))
 {
     double XX = getOptional(j, "XX", 0.0);
     double XY = std::max(getOptional(j, "XY", 0.0), getOptional(j, "YX", 0.0)) / 2.0;
@@ -123,7 +124,7 @@ void Surface::Quadric::transform(const Transform &T)
 
 glm::dvec3 Surface::Quadric::operator()(double u, double v) const
 {
-    return glm::dvec3();
+    return {};
 }
 
 glm::dvec3 Surface::Quadric::normal(const glm::dvec3& pos) const

@@ -35,12 +35,12 @@ glm::dvec3 Material::specularReflection(const glm::dvec3& wi, const glm::dvec3& 
     }
     if (rough_specular)
     {
-        return specular_reflectance * GGX::reflection(wi, wo, a, PDF);
+        return specular_reflectance_color * GGX::reflection(wi, wo, a, PDF);
     }
     else
     {
         PDF = 1.0;
-        return specular_reflectance / std::abs(wi.z);
+        return specular_reflectance_color / std::abs(wi.z);
     }        
 }
 
@@ -53,7 +53,7 @@ glm::dvec3 Material::specularTransmission(const glm::dvec3& wi, const glm::dvec3
         return glm::dvec3(0.0);
     }
 
-    glm::dvec3 btdf = !inside ? transmittance : glm::dvec3(1.0);
+    glm::dvec3 btdf = !inside ? transmittance_color : glm::dvec3(1.0);
     if (rough_specular)
     {
         btdf *= GGX::transmission(wi, wo, n1, n2, a, PDF);
@@ -62,7 +62,7 @@ glm::dvec3 Material::specularTransmission(const glm::dvec3& wi, const glm::dvec3
     else
     {
         PDF = 1.0;
-        btdf *= transmittance / std::abs(wi.z);
+        btdf *= transmittance_color / std::abs(wi.z);
         if (!flux) btdf *= pow2(n1 / n2);
     }
     return btdf;
@@ -75,7 +75,7 @@ glm::dvec3 Material::visibleMicrofacet(double u, double v, const glm::dvec3& wo)
 
 glm::dvec3 Material::lambertian() const
 {
-    return reflectance * C::INV_PI;
+    return reflectance_color * C::INV_PI;
 }
 
 // Avoids trigonometric functions for increased performance.
@@ -99,7 +99,7 @@ void Material::computeProperties()
     rough = roughness > C::EPSILON;
     rough_specular = specular_roughness > C::EPSILON;
     opaque = transparency < C::EPSILON || complex_ior || perfect_mirror;
-    emissive = glm::compMax(emittance) > C::EPSILON;
+    emissive = glm::compMax(emittance_color) > C::EPSILON;
 
     dirac_delta = (complex_ior || perfect_mirror || (std::abs(transparency - 1.0) < C::EPSILON)) && !rough_specular;
 
@@ -119,7 +119,7 @@ void from_json(const nlohmann::json &j, Material &m)
             const nlohmann::json &r = j.at(field);
             if (r.type() == nlohmann::json::value_t::string)
             {
-                std::string hex_string = r.get<std::string>();
+                auto hex_string = r.get<std::string>();
                 if (hex_string.size() == 7 && hex_string[0] == '#')
                 {
                     hex_string.erase(0, 1);
@@ -143,11 +143,11 @@ void from_json(const nlohmann::json &j, Material &m)
     getToOptional(j, "specular_roughness", m.specular_roughness);
     getToOptional(j, "transparency", m.transparency);
     getToOptional(j, "perfect_mirror", m.perfect_mirror);
-    getReflectance("reflectance", m.reflectance);
-    getReflectance("specular_reflectance", m.specular_reflectance);
-    getReflectance("transmittance", m.transmittance);
+    getReflectance("reflectance", m.reflectance_color);
+    getReflectance("specular_reflectance", m.specular_reflectance_color);
+    getReflectance("transmittance", m.transmittance_color);
 
-    m.reflectance = sRGB::gammaExpand(m.reflectance);
+    m.reflectance_color = sRGB::gammaExpand(m.reflectance_color);
 
     if (j.find("emittance") != j.end())
     {
@@ -155,22 +155,22 @@ void from_json(const nlohmann::json &j, Material &m)
         if (e.type() == nlohmann::json::value_t::object)
         {
             double scale = getOptional(e, "scale", 1.0);
-            double temperature = getOptional<double>(e, "temperature", -1.0);
+            auto temperature = getOptional<double>(e, "temperature", -1.0);
 
             if (temperature > 0.0)
             {
-                m.emittance = sRGB::RGB(CIE::Illuminant::blackbody(temperature) * scale);
+                m.emittance_color = sRGB::RGB(CIE::Illuminant::blackbody(temperature) * scale);
             }
             else
             {
-                std::string illuminant = getOptional<std::string>(e, "illuminant", "D65");
+                auto illuminant = getOptional<std::string>(e, "illuminant", "D65");
                 std::transform(illuminant.begin(), illuminant.end(), illuminant.begin(), toupper);
-                m.emittance = sRGB::RGB(CIE::Illuminant::whitePoint(illuminant.c_str()) * scale);
+                m.emittance_color = sRGB::RGB(CIE::Illuminant::whitePoint(illuminant.c_str()) * scale);
             }
         }
         else
         {
-            m.emittance = e.get<glm::dvec3>();
+            m.emittance_color = e.get<glm::dvec3>();
         }
     }
 

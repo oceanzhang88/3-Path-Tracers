@@ -31,17 +31,12 @@ public:
         image.save(savename);
     }
 
-    void setPosition(const glm::dvec3& p)
-    {
-        eye = p;
-    }
-
     void lookAt(const glm::dvec3& p);
 
     size_t sqrtspp;
 
-    glm::dvec3 eye;
-    glm::dvec3 forward, left, up;
+    glm::dvec3 eye{};
+    glm::dvec3 forward{}, left{}, up{};
 
     double focal_length, sensor_width, aperture_radius, focus_distance;
     Image image;

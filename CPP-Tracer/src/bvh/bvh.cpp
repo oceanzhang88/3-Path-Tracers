@@ -21,7 +21,7 @@ BVH::BVH(const BoundingBox &BB,
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    std::string type = getOptional<std::string>(j, "type", "OCTREE");
+    auto type = getOptional<std::string>(j, "type", "OCTREE");
     std::transform(type.begin(), type.end(), type.begin(), toupper);
 
     if (type == "QUATERNARY_SAH")
@@ -128,7 +128,7 @@ Intersection BVH::intersect(const Ray& ray) const
     return intersect;
 }
 
-void BVH::recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, std::shared_ptr<BuildNode> bvh_node)
+void BVH::recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, const std::shared_ptr<BuildNode>& bvh_node)
 {
     bvh_node->df_idx = df_idx++;
 
@@ -146,14 +146,14 @@ void BVH::recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, s
     else
     {
         size_t num_children = 0;
-        for (size_t i = 0; i < octree_node.octants.size(); i++)
+        for (const auto & octant : octree_node.octants)
         {
-            if (!(octree_node.octants[i]->leaf() && octree_node.octants[i]->data_vec.empty()))
+            if (!(octant->leaf() && octant->data_vec.empty()))
             {
                 num_children++;
                 std::shared_ptr<BuildNode> child = std::make_shared<BuildNode>();
                 bvh_node->children.push_back(child);
-                recursiveBuildFromOctree(*octree_node.octants[i], child);
+                recursiveBuildFromOctree(*octant, child);
                 BB.merge(child->BB);
             }
         }
@@ -162,7 +162,7 @@ void BVH::recursiveBuildFromOctree(const Octree<SurfaceCentroid> &octree_node, s
     bvh_node->BB = BB;
 }
 
-void BVH::recursiveBuildBinarySAH(std::shared_ptr<BuildNode> bvh_node)
+void BVH::recursiveBuildBinarySAH(const std::shared_ptr<BuildNode>& bvh_node)
 {
     bvh_node->df_idx = df_idx++;
 
@@ -287,7 +287,7 @@ void BVH::recursiveBuildBinarySAH(std::shared_ptr<BuildNode> bvh_node)
     branching[num_children]++;
 }
 
-void BVH::recursiveBuildQuaternarySAH(std::shared_ptr<BuildNode> bvh_node)
+void BVH::recursiveBuildQuaternarySAH(const std::shared_ptr<BuildNode>& bvh_node)
 {
     bvh_node->df_idx = df_idx++;
 
@@ -425,7 +425,7 @@ void BVH::recursiveBuildQuaternarySAH(std::shared_ptr<BuildNode> bvh_node)
     branching[num_children]++;
 }
 
-void BVH::compact(std::shared_ptr<BuildNode> bvh_node, uint32_t next_sibling, uint32_t &surface_idx)
+void BVH::compact(const std::shared_ptr<BuildNode>& bvh_node, uint32_t next_sibling, uint32_t &surface_idx)
 {
     linear_tree[bvh_node->df_idx].BB = bvh_node->BB;
     linear_tree[bvh_node->df_idx].next_sibling = next_sibling;
@@ -448,7 +448,7 @@ void BVH::compact(std::shared_ptr<BuildNode> bvh_node, uint32_t next_sibling, ui
     }
 }
 
-void BVH::arbitrarySplit(std::shared_ptr<BuildNode> bvh_node, size_t N)
+void BVH::arbitrarySplit(const std::shared_ptr<BuildNode>& bvh_node, size_t N)
 {
     auto& S = bvh_node->surfaces;
 
@@ -472,5 +472,5 @@ void BVH::arbitrarySplit(std::shared_ptr<BuildNode> bvh_node, size_t N)
     branching[N]++;
 }
 
-BVH::SurfaceCentroid::SurfaceCentroid(std::shared_ptr<Surface::Base> surface)
+BVH::SurfaceCentroid::SurfaceCentroid(const std::shared_ptr<Surface::Base>& surface)
     : surface(surface), centroid(surface->BB().centroid()) { }

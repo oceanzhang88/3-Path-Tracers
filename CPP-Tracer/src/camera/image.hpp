@@ -10,26 +10,26 @@
 
 struct Image
 {
-    Image() { }
-    Image(const nlohmann::json &j);
+    Image() = default;
+    explicit Image(const nlohmann::json &j);
 
     void save(const std::string& filename) const;
 
     glm::dvec3& operator()(size_t col, size_t row);
 
-    size_t width, height;
-    size_t num_pixels;
+    size_t width{}, height{};
+    size_t num_pixels{};
 
 private:
-    double getExposure() const;
-    double getGain(double exposure_factor) const;
+    [[nodiscard]] double getExposure() const;
+    [[nodiscard]] double getGain(double exposure_factor) const;
 
     std::vector<glm::dvec3> blob;
-    double exposure_scale, gain_scale;
+    double exposure_scale{}, gain_scale{};
 
     std::function<glm::dvec3(const glm::dvec3&)> tonemap;
 
-    bool plain; // No tonemapping or autoexposure/-gain
+    bool plain{}; // No tonemapping or autoexposure/-gain
 
     /**************************************************************************
     Hard coded (except for dimensions) uncompressed 24bpp true-color TGA header.

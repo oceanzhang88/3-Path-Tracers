@@ -6,7 +6,7 @@
 #include "filter.hpp"
 #include "../common/util.hpp"
 
-Film::Film() { }
+Film::Film() = default;
 
 Film::Film(size_t width, size_t height)
     : width(width), height(height), blob(width* height), 

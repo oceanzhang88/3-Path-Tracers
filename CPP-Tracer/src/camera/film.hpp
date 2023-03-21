@@ -21,10 +21,10 @@ public:
 
     void deposit(const glm::dvec2& p, const glm::dvec3& v);
 
-    glm::dvec3 scan(size_t col, size_t row) const;
+    [[nodiscard]] glm::dvec3 scan(size_t col, size_t row) const;
 
 private:
-    double filter(double x) const;
+    [[nodiscard]] double filter(double x) const;
 
     struct Splat
     {
@@ -41,11 +41,11 @@ private:
 
     std::vector<double> filter_cache;
 
-    double radius;
-    double two_inv_radius;
-    double inv_dx;
+    double radius{};
+    double two_inv_radius{};
+    double inv_dx{};
 
-    size_t width, height;
+    size_t width{}, height{};
 
     std::function<double(double)> filter_function;
 };

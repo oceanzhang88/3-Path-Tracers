@@ -11,22 +11,22 @@ struct alignas(32) Photon
         phi = (float)std::atan2(direction.y, direction.x);
     }
 
-    glm::dvec3 pos() const
+    [[nodiscard]] glm::dvec3 pos() const
     {
         return position_;
     }
 
-    glm::dvec3 dir() const
+    [[nodiscard]] glm::dvec3 dir() const
     {
         double sin_theta = std::sin(theta);
-        return glm::dvec3(
+        return {
             sin_theta * std::cos(phi),
             sin_theta * std::sin(phi),
             std::cos(theta)
-        );
+        };
     }
 
-    glm::dvec3 flux() const
+    [[nodiscard]] glm::dvec3 flux() const
     {
         return flux_;
     }

@@ -83,27 +83,27 @@ glm::dvec3 Integrator::sampleDirect(const Interaction& interaction, LightSample&
 
     double mis_weight = powerHeuristic(light_pdf, bsdf_pdf);
 
-    return mis_weight * bsdf_absIdotN * ls.light->material->emittance / (light_pdf * ls.select_probability);
+    return mis_weight * bsdf_absIdotN * ls.light->material->emittance_color / (light_pdf * ls.select_probability);
 }
 
 /********************************************************************
-Adds emittance from interaction surface if applicable, or samples 
+Adds emittance_color from interaction surface if applicable, or samples
 the emissive using the BSDF from the previous interaction using MIS.
 ********************************************************************/
-glm::dvec3 Integrator::sampleEmissive(const Interaction& interaction, const LightSample &ls) const
+glm::dvec3 Integrator::sampleEmissive(const Interaction& interaction, const LightSample &ls)
 {
     if (interaction.material->emissive && !interaction.inside)
     {
         if (interaction.ray.depth == 0 || interaction.ray.dirac_delta)
         {
-            return interaction.material->emittance;
+            return interaction.material->emittance_color;
         }
         if(ls.light == interaction.surface)
         {
             double cos_light_theta = glm::dot(interaction.out, interaction.normal);
             double light_pdf = pow2(interaction.t) / (interaction.surface->area() * cos_light_theta);
             double mis_weight = powerHeuristic(ls.bsdf_pdf, light_pdf);
-            return mis_weight * interaction.material->emittance / ls.select_probability;
+            return mis_weight * interaction.material->emittance_color / ls.select_probability;
         }
     }
     return glm::dvec3(0.0);

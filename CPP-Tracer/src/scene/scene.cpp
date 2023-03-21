@@ -64,7 +64,7 @@ Scene::Scene(const nlohmann::json& j)
                 triangles_vn = triangles_v;
             }
 
-            bool is_emissive = glm::compMax(material->emittance) > C::EPSILON;
+            bool is_emissive = glm::compMax(material->emittance_color) > C::EPSILON;
             double total_area = 0.0;
             if (is_emissive)
             {
@@ -78,14 +78,14 @@ Scene::Scene(const nlohmann::json& j)
             {
                 const auto &t = triangles_v[i];
 
-                // Entire object emits the flux of assigned material emittance in scene file.
+                // Entire object emits the flux of assigned material emittance_color in scene file.
                 // The flux of the material therefore needs to be distributed amongst all object triangles.
                 std::shared_ptr<Material> mat;
                 if (is_emissive && total_area > C::EPSILON)
                 {
                     double area = Surface::Triangle(v.at(t.at(0)), v.at(t.at(1)), v.at(t.at(2)), nullptr).area();
                     mat = std::make_shared<Material>(*material);
-                    mat->emittance *= area / total_area;
+                    mat->emittance_color *= area / total_area;
                 }
                 else
                 {
@@ -125,10 +125,10 @@ Scene::Scene(const nlohmann::json& j)
                 // Emittance is not supported for general quadrics 
                 // (no parameterization -> no uniform surface sampling or surface area integral)
                 std::shared_ptr<Material> mat = material;
-                if (glm::compMax(material->emittance) > C::EPSILON)
+                if (glm::compMax(material->emittance_color) > C::EPSILON)
                 {
                     mat = std::make_shared<Material>(*material);
-                    mat->emittance = glm::dvec3(0.0);
+                    mat->emittance_color = glm::dvec3(0.0);
                 }
                 surfaces.push_back(std::make_shared<Surface::Quadric>(s, mat));
             }
@@ -190,16 +190,16 @@ void Scene::generateEmissives()
     std::sort(emissives.begin(), emissives.end(),
         [](const auto& a, const auto& b)
         {
-            return glm::compMax(a->material->emittance) > glm::compMax(b->material->emittance);
+            return glm::compMax(a->material->emittance_color) > glm::compMax(b->material->emittance_color);
         }
     );
     
     double cumulative_max_flux = 0.0;
     for (const auto& emissive : emissives)
     {
-        cumulative_max_flux += glm::compMax(emissive->material->emittance);
+        cumulative_max_flux += glm::compMax(emissive->material->emittance_color);
         cumulative_emissives_importance.push_back(cumulative_max_flux);
-        emissive->material->emittance /= emissive->area(); // flux to radiosity
+        emissive->material->emittance_color /= emissive->area(); // flux to radiosity
     }
 
     for (auto& ei : cumulative_emissives_importance)
@@ -216,7 +216,7 @@ void Scene::computeBoundingBox()
     }
 }
 
-glm::dvec3 Scene::skyColor(const Ray& ray) const
+glm::dvec3 Scene::skyColor(const Ray& ray)
 {
     double fy = (1.0 + std::asin(glm::dot(glm::dvec3(0.0, 1.0, 0.0), ray.direction)) / C::PI) / 2.0;
     return glm::mix(glm::dvec3(1.0, 0.5, 0.0), glm::dvec3(0.0, 0.5, 1.0), fy);
@@ -240,7 +240,7 @@ void Scene::parseOBJ(const std::filesystem::path &path,
                      std::vector<glm::dvec3> &normals,
                      std::vector<std::vector<size_t>> &triangles_v,
                      std::vector<std::vector<size_t>> &triangles_vt,
-                     std::vector<std::vector<size_t>> &triangles_vn) const
+                     std::vector<std::vector<size_t>> &triangles_vn)
 {
     if (!std::filesystem::exists(path))
     {
@@ -324,7 +324,7 @@ void Scene::parseOBJ(const std::filesystem::path &path,
 
 void Scene::generateVertexNormals(std::vector<glm::dvec3> &normals,
                                   const std::vector<glm::dvec3> &vertices,
-                                  const std::vector<std::vector<size_t>> &triangles) const
+                                  const std::vector<std::vector<size_t>> &triangles)
 {
     normals.resize(vertices.size(), glm::dvec3(0.0));
 

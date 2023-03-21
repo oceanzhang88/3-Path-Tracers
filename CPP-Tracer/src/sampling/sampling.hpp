@@ -40,7 +40,7 @@ namespace Sampling
 
         // Project up to hemisphere.
         // z = sin(acos(r)) = sqrt(1-r^2) = sqrt(1-sqrt(u)^2) = sqrt(1-u) 
-        return glm::dvec3(r * std::cos(azimuth), r * std::sin(azimuth), std::sqrt(1 - u));
+        return {r * std::cos(azimuth), r * std::sin(azimuth), std::sqrt(1 - u)};
     }
 }
 

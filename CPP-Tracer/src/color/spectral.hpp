@@ -51,7 +51,7 @@ namespace Spectral
     {
         static_assert(SIZE >= 2, "Linear spectral distribution must have at least 2 elements.");
 
-        constexpr LinearDistribution(const std::array<Value<T>, SIZE> &S)
+        constexpr explicit LinearDistribution(const std::array<Value<T>, SIZE> &S)
             : S(S), dw(S[1].w - S[0].w), a(S[0].w), b(S[SIZE - 1].w)
         {
             if (dw <= 0.0) throw std::invalid_argument("");
@@ -72,7 +72,7 @@ namespace Spectral
             if (w < a) return S[0].value;
             if (w > b) return S[SIZE - 1].value;
 
-            size_t i = static_cast<size_t>((w - a) / dw);
+            auto i = static_cast<size_t>((w - a) / dw);
 
             return i < SIZE - 1 ? interpolate(S[i], S[i + 1], w) : S[i].value;
         }

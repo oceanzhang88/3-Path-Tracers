@@ -10,13 +10,13 @@ struct Interaction;
 class Ray
 {
 public:
-    Ray(const Interaction& ia);
+    explicit Ray(const Interaction& interaction);
     Ray(const glm::dvec3& start, const glm::dvec3& end);
     Ray(const glm::dvec3& start, const glm::dvec3& direction, double medium_ior);
 
     glm::dvec3 operator()(double t) const;
 
-    glm::dvec3 start, direction, inv_direction;
+    glm::dvec3 start, direction{}, inv_direction{};
     double medium_ior;
     double refraction_scale = 1.0;
     bool dirac_delta = false, refraction = false;
@@ -27,9 +27,9 @@ public:
 
 struct RefractionHistory
 {
-    RefractionHistory(const Ray& ray);
+    explicit RefractionHistory(const Ray& ray);
     void update(const Ray& ray);
-    double externalIOR(const Ray& ray) const;
+    [[nodiscard]] double externalIOR(const Ray& ray) const;
 
 private:
     std::vector<double> iors;

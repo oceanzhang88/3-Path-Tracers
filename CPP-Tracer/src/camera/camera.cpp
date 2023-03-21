@@ -7,15 +7,12 @@
 #include <iomanip>
 #include <sstream>
 
-#include "../ray/ray.hpp"
 #include "../integrator/path-tracer/path-tracer.hpp"
 #include "../integrator/photon-mapper/photon-mapper.hpp"
 #include "../sampling/sampling.hpp"
 #include "../sampling/sampler.hpp"
 #include "../common/util.hpp"
-#include "../common/constexpr-math.hpp"
 #include "../common/format.hpp"
-#include "../common/constants.hpp"
 
 Camera::Camera(const nlohmann::json &j, const Option &option)
 {
@@ -109,7 +106,7 @@ void Camera::sampleImage()
         {
             size_t y_end = y + bucket_size;
             if (y_end >= image.height) y_end = image.height;
-            buckets_vec.push_back(Bucket(glm::ivec2(x, y), glm::ivec2(x_end, y_end)));
+            buckets_vec.emplace_back(glm::ivec2(x, y), glm::ivec2(x_end, y_end));
         }
     }
 
@@ -213,8 +210,8 @@ void Camera::printInfoThread(WorkQueue<Bucket>& buckets)
             double pixels_per_msec = std::accumulate(times.begin(), times.end(), 0.0) / times.size();
 
             double progress = 100.0 * static_cast<double>(num_sampled_pixels) / image.num_pixels;
-            size_t msec_left = static_cast<size_t>(pixels_left / pixels_per_msec);
-            size_t sps = static_cast<size_t>(pixels_per_msec * 1000.0 * pow2(static_cast<double>(sqrtspp)));
+            auto msec_left = static_cast<size_t>(pixels_left / pixels_per_msec);
+            auto sps = static_cast<size_t>(pixels_per_msec * 1000.0 * pow2(static_cast<double>(sqrtspp)));
 
             printProgressInfo(progress, msec_left, sps, std::cout);
 

@@ -9,7 +9,7 @@
 
 #include "util.hpp"
 
-std::vector<Option> availible(std::filesystem::path path)
+std::vector<Option> availible(const std::filesystem::path& path)
 {
     std::vector<Option> options;
     for (const auto& file : std::filesystem::directory_iterator(path))
@@ -46,7 +46,7 @@ Option getOption(std::vector<Option>& options)
     for (const auto& o : options)
     {
         std::string file = o.path.filename().string();
-        file.erase(file.find("."), file.length());
+        file.erase(file.find('.'), file.length());
 
         if (file.size() > max_fil)
             max_fil = file.size();
@@ -59,7 +59,7 @@ Option getOption(std::vector<Option>& options)
 
     std::cout << " " << std::string(max_opt + max_fil + max_cam + 5, '_') << std::endl;
 
-    auto printLine = [](std::vector<std::pair<std::string, size_t>> line) {
+    auto printLine = [](const std::vector<std::pair<std::string, size_t>>& line) {
         std::cout << "| ";
         for (const auto& l : line)
         {
@@ -77,7 +77,7 @@ Option getOption(std::vector<Option>& options)
     for (int i = 0; i < options.size(); i++)
     {
         std::string file = options[i].path.filename().string();
-        file.erase(file.find("."), file.length());
+        file.erase(file.find('.'), file.length());
 
         printLine({ {std::to_string(i), max_opt},{file, max_fil},{options[i].camera, max_cam} });
         std::cout << sep << std::endl;

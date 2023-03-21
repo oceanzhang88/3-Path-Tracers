@@ -16,13 +16,13 @@ namespace Surface { class Base; }
 class Scene
 {
 public:
-    Scene(const nlohmann::json& j);
+    explicit Scene(const nlohmann::json& j);
 
-    Intersection intersect(const Ray& ray) const;
+    [[nodiscard]] Intersection intersect(const Ray& ray) const;
 
     void generateEmissives();
 
-    glm::dvec3 skyColor(const Ray& ray) const;
+    static glm::dvec3 skyColor(const Ray& ray) ;
 
     std::vector<std::shared_ptr<Surface::Base>> surfaces;
     std::vector<std::shared_ptr<Surface::Base>> emissives; // subset of surfaces
@@ -30,7 +30,7 @@ public:
 
     std::shared_ptr<Surface::Base> selectLight(double u, double& select_probability) const;
 
-    BoundingBox BB() const
+    [[nodiscard]] BoundingBox BB() const
     {
         return BB_;
     }
@@ -46,14 +46,14 @@ private:
 
     void computeBoundingBox();
 
-    void parseOBJ(const std::filesystem::path &path,
+    static void parseOBJ(const std::filesystem::path &path,
                   std::vector<glm::dvec3> &vertices,
                   std::vector<glm::dvec3> &normals,
                   std::vector<std::vector<size_t>> &triangles_v,
                   std::vector<std::vector<size_t>> &triangles_vt,
-                  std::vector<std::vector<size_t>> &triangles_vn) const;
+                  std::vector<std::vector<size_t>> &triangles_vn) ;
 
-    void generateVertexNormals(std::vector<glm::dvec3> &normals,
+    static void generateVertexNormals(std::vector<glm::dvec3> &normals,
                                const std::vector<glm::dvec3> &vertices, 
-                               const std::vector<std::vector<size_t>> &triangles) const;
+                               const std::vector<std::vector<size_t>> &triangles) ;
 };

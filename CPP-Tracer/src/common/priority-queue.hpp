@@ -14,7 +14,7 @@ class PriorityQueue
     typedef typename std::vector<T>::size_type uint_t;
 
 public:
-    PriorityQueue(uint_t reserved = 64) { H.reserve(reserved); }
+    explicit PriorityQueue(uint_t reserved = 64) { H.reserve(reserved); }
 
     void push(const T& value)
     {
@@ -66,7 +66,6 @@ public:
         {
             uint_t left = leftIndex(index);
             if (H[index] < H[left]) std::swap(H[index], H[left]);
-            if (index == 0) return;
             index--;
         }
 
@@ -88,14 +87,14 @@ public:
     typename std::vector<T>::const_iterator end() { return H.end(); }
 
     const T& top() const { return H.front(); }
-    bool empty() const { return H.empty(); }
+    [[nodiscard]] bool empty() const { return H.empty(); }
     uint_t size() const { return H.size(); }
     void clear() { H.clear(); }
 
 private:
     uint_t parentIndex(uint_t i) const { return (i - 1) / 2; }
     uint_t leftIndex(uint_t i) const { return 2 * i + 1; }
-    uint_t rightIndex(uint_t i) const { return 2 * i + 2; }
+
     uint_t grandparentIndex(uint_t i) const { return (i - 3) / 4; }
 
     // Effectively replaces the value at index with the input value,
@@ -135,31 +134,16 @@ class PriorityQueue1
 {
     typedef typename std::vector<T>::size_type uint_t;
 public:
-    PriorityQueue1(uint_t reserved = 64) { H.reserve(reserved); }
+    explicit PriorityQueue1(uint_t reserved = 64) { H.reserve(reserved); }
 
     void push(const T& value) { H.push_back(value); std::push_heap(H.begin(), H.end()); }
     void pop() { std::pop_heap(H.begin(), H.end()); H.pop_back(); }
-    void push_unordered(const T& value) { H.push_back(value); }
-    void make_heap() { std::make_heap(H.begin(), H.end()); }
 
-    // The only way to achieve optimized pop and push with std::[operation]_heap.
-    // The overhead compared to the new queue is the push_back, swap and pop_back,
-    // which should basically be free if the container has enough reserved space.
-    void pop_push(const T& value) 
-    {
-        // Adds new value last.
-        H.push_back(value); 
-        // Swaps last (new) and first (max) value, and moves the new value down to correct position.
-        std::pop_heap(H.begin(), H.end());
-        // Removes max value.
-        H.pop_back();
-    }
-
-    typename std::vector<T>::const_iterator const begin() { return H.begin(); }
-    typename std::vector<T>::const_iterator const end() { return H.end(); }
+    typename std::vector<T>::const_iterator begin() { return H.begin(); }
+    typename std::vector<T>::const_iterator end() { return H.end(); }
 
     const T& top() const { return H.front(); }
-    bool empty() const { return H.empty(); }
+    [[nodiscard]] bool empty() const { return H.empty(); }
     uint_t size() const { return H.size(); }
     void clear() { H.clear(); }
 

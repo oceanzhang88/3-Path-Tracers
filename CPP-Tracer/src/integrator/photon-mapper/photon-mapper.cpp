@@ -43,7 +43,7 @@ PhotonMapper::PhotonMapper(const nlohmann::json& j) : Integrator(j)
     double total_add_flux = 0.0;
     for (const auto& light : scene.emissives)
     {
-        total_add_flux += glm::compAdd(light->material->emittance * light->area());
+        total_add_flux += glm::compAdd(light->material->emittance_color * light->area());
     }
 
     struct EmissionWork
@@ -63,9 +63,9 @@ PhotonMapper::PhotonMapper(const nlohmann::json& j) : Integrator(j)
     for(size_t i = 0; i < scene.emissives.size(); i++)
     {
         auto light = scene.emissives[i];
-        glm::dvec3 light_flux = light->material->emittance * light->area();
+        glm::dvec3 light_flux = light->material->emittance_color * light->area();
         double photon_emissions_share = glm::compAdd(light_flux) / total_add_flux;
-        size_t num_light_emissions = static_cast<size_t>(photon_emissions * photon_emissions_share);
+        auto num_light_emissions = static_cast<size_t>(photon_emissions * photon_emissions_share);
         glm::dvec3 photon_flux = light_flux / static_cast<double>(num_light_emissions);
 
         size_t count = 0;
@@ -150,7 +150,7 @@ PhotonMapper::PhotonMapper(const nlohmann::json& j) : Integrator(j)
             
         print_thread = std::make_unique<std::thread>([&done_constructing_octrees, info]()
         {
-            std::string dots("");
+            std::string dots;
             int i = 0;
             while (!done_constructing_octrees)
             {
@@ -298,7 +298,7 @@ glm::dvec3 PhotonMapper::sampleRay(Ray ray)
 
         radiance += Integrator::sampleEmissive(interaction, ls) * throughput;
 
-        if (interaction.dirac_delta)
+        if (interaction.impulse_specular)
         {
             if (!ray.dirac_delta && ray.depth != 0)
             {

@@ -22,7 +22,7 @@ Image::Image(const nlohmann::json &j)
     exposure_scale = std::pow(2, exposure_EV);
     gain_scale = std::pow(2, gain_EV);
 
-    std::string tonemapper = getOptional<std::string>(j, "tonemapper", "HABLE");
+    auto tonemapper = getOptional<std::string>(j, "tonemapper", "HABLE");
     std::transform(tonemapper.begin(), tonemapper.end(), tonemapper.begin(), toupper);
 
     if (plain)

@@ -53,7 +53,7 @@ struct Sampler
 
 private:
     inline thread_local static uint32_t base_seed = 0u, seed = 0u, sequence = 0u,
-                                        bit_reversed_index = 0u, shuffled_index = 0u;
+            bit_reversed_index = 0u, shuffled_index = 0u;
 
     inline static const uint32_t global_seed = std::random_device{}();
 
