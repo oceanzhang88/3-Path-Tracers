@@ -14,6 +14,15 @@ This image is rendered from the CPP-Tracer via Photon Mapping.
 
 <img src="media/water_bunny_caustics.png" alt="drawing" width="1000"/>
 
+
+## 
+
+
+Rendering Equation Surface Form | Rendering Equation Directional Form
+:-------------------------:|:-------------------------:
+ <img width="845" alt="Screenshot 2023-03-21 at 01 34 25" src="https://user-images.githubusercontent.com/25319668/226526544-ab4080d5-700f-45bf-bf6b-4de10413e8b1.png"> | <img width="846" alt="Screenshot 2023-03-21 at 01 34 16" src="https://user-images.githubusercontent.com/25319668/226526545-a1406a7a-b4f1-49cb-bde4-cd7de97ff400.png">
+
+
 ## Monte-Carlo Integration with Important Sampling in Action
 
 
